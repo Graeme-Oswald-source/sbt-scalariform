@@ -50,7 +50,7 @@ object SbtScalariform
 
   override def globalSettings = Seq(
     scalariformPreferences := defaultPreferences,
-    includeFilter in scalariformFormat := "*.scala",
+    scalariformFormat / includeFilter := "*.scala",
     scalariformAutoformat := (
       PreferencesFile(None).map(_.autoformat.autoformat).getOrElse(Defaults.autoformat)
     ),
@@ -80,25 +80,25 @@ object SbtScalariform
   private val compileSettings = inputs(Compile) ++ inputs(Test)
 
   private def inputs(config: Configuration): Seq[Setting[_]] = {
-    val input = compileInputs in (config, compile)
+    val input = config / compile / compileInputs
     Seq(
-      input := (input dependsOn (scalariformDoAutoformat in config)).value
+      input := (input dependsOn (config / scalariformDoAutoformat)).value
     )
   }
 
   def configScalariformSettings: Seq[Setting[_]] = {
     List(
-      (sourceDirectories in scalariformFormat) :=
+      (scalariformFormat / sourceDirectories) :=
         unmanagedSourceDirectories.value ++ (
           if (!scalariformWithBaseDirectory.value) Seq.empty
-          else Seq(baseDirectory.in(LocalRootProject).value)
+          else Seq((LocalRootProject / baseDirectory).value)
         ),
       scalariformPreferences := getPreferences(scalariformPreferences.value)(None),
       scalariformFormat := Scalariform(
         getPreferences(scalariformPreferences.value)(Some(streams.value)),
-        (sourceDirectories in scalariformFormat).value.toList,
-        (includeFilter in scalariformFormat).value,
-        (excludeFilter in scalariformFormat).value,
+        (scalariformFormat / sourceDirectories).value.toList,
+        (scalariformFormat / includeFilter).value,
+        (scalariformFormat / excludeFilter).value,
         thisProjectRef.value,
         configuration.value,
         streams.value,

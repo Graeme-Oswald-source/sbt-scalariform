@@ -88,7 +88,7 @@ credentials ++= {
 }
 
 def getPublishToRepo = Def.setting {
-  val nexus = "https://nexus-proxy.lighthouse.jhc.uk/nexus/contents/repositories/"
+  val nexus = "https://nexus-proxy.lighthouse.jhc.uk/nexus/content/repositories/"
   if (isSnapshot.value)
     Some("snapshots" at nexus + "snapshots")
   else

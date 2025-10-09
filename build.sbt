@@ -23,15 +23,17 @@ val sbtScalariform = Project(projectName, file("."))
       url("http://danieltrinh.com")
     )
   )
+sbtPlugin := true
 
 resolvers += Resolver.mavenLocal
 
 crossSbtVersions := Vector("0.13.18", "1.2.8", "1.11.5")
+//crossSbtVersions := Vector("1.11.5")
 
 scalaVersion := (crossScalaVersions).value.head
 
 crossScalaVersions := Seq(
-  "2.13.16",
+  //"2.13.16",
   "2.12.15"
 )
 
@@ -59,17 +61,17 @@ com.typesafe.sbt.SbtScalariform.ScalariformKeys.preferences := {
 // preserve formatting of sbt-scripted test files
 scalariformFormat / excludeFilter := "unformatted.scala" || "formatted.scala"
 
-enablePlugins(SbtPlugin)
-scriptedLaunchOpts := {
-  val sbtAssemblyVersion = "2.3.1"
-
-  scriptedLaunchOpts.value ++ Seq(
-    "-Xmx1024M",
-    s"-Dsbt-assembly.version=${sbtAssemblyVersion}",
-    s"-Dsbt-scalariform.version=${version.value}"
-  )
-}
-scriptedBufferLog := false
+//enablePlugins(SbtPlugin)
+//scriptedLaunchOpts := {
+//  val sbtAssemblyVersion = "2.3.1"
+//
+//  scriptedLaunchOpts.value ++ Seq(
+//    "-Xmx1024M",
+//    s"-Dsbt-assembly.version=${sbtAssemblyVersion}",
+//    s"-Dsbt-scalariform.version=${version.value}"
+//  )
+//}
+//scriptedBufferLog := false
 
 publishMavenStyle := true
 Test / publishArtifact := false
